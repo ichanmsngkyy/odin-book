@@ -1,5 +1,5 @@
 class FollowsController < ApplicationController
-    before_action :set_follo, only: [ :update, :destroy ]
+    before_action :set_follow, only: [ :update, :destroy ]
 
     def create
         @follow = current_user.active_follows.build(follow_params)
@@ -11,7 +11,6 @@ class FollowsController < ApplicationController
     end
 
     def update
-        @follow = Follow.find(params[:id])
         if @follow.followed_id == current_user.id
             @follow.update(status: :accepted) # accepted
             redirect_back(fallback_location: root_path, notice: "Follow request accepted.")
@@ -22,7 +21,6 @@ class FollowsController < ApplicationController
 
 
     def destroy
-        @follow = Follow.find(params[:id])
         if @follow.follower_id == current_user.id || @follow.followed_id == current_user.id
             @follow.destroy
             redirect_back(fallback_location: root_path, notice: "Unfollowed successfully.")
@@ -31,9 +29,14 @@ class FollowsController < ApplicationController
         end
     end
 
+
     private
 
     def follow_params
-       params.permit(:followed_id)
+        params.permit(:followed_id)
+    end
+
+    def set_follow
+      @follow = Follow.find(params[:id])
     end
 end

@@ -15,4 +15,7 @@ class User < ApplicationRecord
 
   # Post model
   has_many :posts
+
+  # Like model
+  has_many :likes
 end
