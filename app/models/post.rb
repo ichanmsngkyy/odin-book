@@ -6,4 +6,7 @@ class Post < ApplicationRecord
 
   # Like model
   has_many :likes
+
+  # Comment mode;
+  has_many :comments
 end

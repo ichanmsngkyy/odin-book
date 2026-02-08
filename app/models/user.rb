@@ -18,4 +18,7 @@ class User < ApplicationRecord
 
   # Like model
   has_many :likes
+
+  # Comment model
+  has_many :comments
 end

@@ -30,7 +30,7 @@ class PostsController < ApplicationController
   private
 
   def create_params
-    params.require(:post).permit(:content)
+    params.permit(:content)
   end
 
   def set_post
