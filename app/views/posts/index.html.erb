@@ -1,16 +1,36 @@
-<%= link_to "New Post", new_post_path%>
-<% @posts.each do |post|%>
+<%= link_to "New Post", new_post_path %>
+<% @posts.each do |post| %>
     <div>
-        <p> <%= post.user.email%> </p>
-        <p> <%= post.content%></p>
-        <p> <%= post.created_at%></p>
+        <p> <%= post.user.email %> </p>
+
+        <% existing_follow = current_user.active_follows.find_by(followed_id: post.user.id) %>
+
+        <% if post.user != current_user%>
+            <% if existing_follow %>
+                <%= button_to "Unfollow", follow_path(existing_follow), method: :delete %>
+            <% else%>
+                <%= button_to "Follow", follows_path, method: :post, params: {followed_id: post.user.id} %>
+            <%end %>
+        <% end%>
+
+        <p> <%= post.content %> </p>
+        <p> <%= post.created_at %> </p>
 
         <%=link_to "Reply", "#" %>
-        <%=link_to "Like", "#" %>
+
+        <% existing_like = post.likes.find_by(user: current_user) %>
+        <% if existing_like %>
+            <%= button_to "❤️", like_path(existing_like), method: :delete %>
+        <% else%>
+            <%= button_to "🤍", likes_path, method: :post, params: {post_id: post.id} %>
+        <% end %>
+
+        <%= post.likes.count %>
+
         <%=link_to "Retweet", "#" %>
 
-        <% if post.user_id == current_user.id%>
-            <%= button_to "Delete", post_path(post), method: :delete%>
+        <% if post.user_id == current_user.id %>
+            <%= button_to "Delete", post_path(post), method: :delete %>
         <%end%>
     </div>
 <%end%>
