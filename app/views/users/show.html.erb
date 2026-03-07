@@ -1,21 +1,15 @@
-<%= link_to "New Post", new_post_path %>
-<%= link_to "Profile", user_path(current_user) %>
+<%= link_to "Feed", root_path%>
+<div>
+    <p> <%= image_tag @user.profile_picture, alt: "Profile Picture", class: "small-avatar"%></p>
+    <p> <%= @user.email%></p>
 
-<% @posts.each do |post| %>
     <div>
-        <p> <%= image_tag post.user.profile_picture, alt: "Profile Picture", class: "small-avatar"%>
-        <p> <%= post.user.email %> </p>
+        <p><% @user.followers.count%></p>
+        <p><% @user.following.count%></p>
+    </div>
 
-        <% existing_follow = current_user.active_follows.find_by(followed_id: post.user.id) %>
-
-        <% if post.user != current_user%>
-            <% if existing_follow %>
-                <%= button_to "Unfollow", follow_path(existing_follow), method: :delete %>
-            <% else%>
-                <%= button_to "Follow", follows_path, method: :post, params: {followed_id: post.user.id} %>
-            <%end %>
-        <% end%>
-
+    <div>
+        <% @posts.each do |post|%>
         <p> <%= post.content %> </p>
         <p> <%= post.created_at %> </p>
 
@@ -51,6 +45,5 @@
             <% end %>
         <% end %>
     </div>
-<%end%>
-
-<%= button_to "Logout", destroy_user_session_path, method: :delete%>
+    <%end%>
+</div>

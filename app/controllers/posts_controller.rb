@@ -2,7 +2,8 @@ class PostsController < ApplicationController
   before_action :set_post, only: [ :destroy ]
 
   def index
-    @posts = Post.all.order(created_at: :desc)
+    followed_user_ids = current_user.following.where(follows: { status: :accepted }).pluck(:id)
+    @posts = Post.all.where(user_id: followed_user_ids + [ current_user.id ]).order(created_at: :desc)
   end
 
   def new
@@ -12,7 +13,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(create_params)
     if @post.save
-      redirect_back(fallback_location: posts_path, notice: "Post has been created.")
+      redirect_to(fallback_location: posts_path, notice: "Post has been created.")
     else
       redirect_back(fallback_location: posts_path, alert: "Unable to create post.")
     end

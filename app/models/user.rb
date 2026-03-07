@@ -21,4 +21,25 @@ class User < ApplicationRecord
 
   # Comment model
   has_many :comments
+
+  require "digest"
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+      user.avatar_url = auth.info.image
+    end
+  end
+
+  def profile_picture(size: 200)
+    avatar_url.presence || gravatar_url
+  end
+
+  private
+
+  def gravatar_url(size: 200)
+      hash = Digest::MD5.hexdigest(email.downcase.strip)
+      "https://www.gravatar.com/avatar/#{hash}?d=identicon&s=#{size}"
+  end
 end
