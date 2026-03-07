@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: [ :destroy ]
 
   def index
-    followed_user_ids = current_user.following.where(follows: { status: :accepted }).pluck(:id)
+    followed_user_ids = current_user.active_follows.where(status: :accepted).pluck(:followed_id)
     @posts = Post.all.where(user_id: followed_user_ids + [ current_user.id ]).order(created_at: :desc)
   end
 

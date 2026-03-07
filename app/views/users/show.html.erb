@@ -1,4 +1,8 @@
-<%= link_to "Feed", root_path%>
+<%= link_to "New Post", new_post_path %>
+<%= link_to "Home", posts_path%>
+<%= link_to "Profile", user_path(current_user) %>
+<%= link_to "Who to follow", users_path%>
+
 <div>
     <p> <%= image_tag @user.profile_picture, alt: "Profile Picture", class: "small-avatar"%></p>
     <p> <%= @user.email%></p>

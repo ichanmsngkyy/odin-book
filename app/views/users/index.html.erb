@@ -1,0 +1,21 @@
+<%= link_to "New Post", new_post_path %>
+<%= link_to "Home", posts_path%>
+<%= link_to "Profile", user_path(current_user) %>
+<%= link_to "Who to follow", users_path%>
+
+<% @users.each do |user|%>
+<% existing_follow = current_user.active_follows.find_by(followed_id: user.id) %>
+    <% if existing_follow %>
+        <div>
+            <p> <%= image_tag user.profile_picture, alt: "Profile Picture", class: "small-avatar"%></p>
+            <p> <%= user.email%></p>
+            <p> <%= button_to "Following", follow_path(existing_follow), method: :delete%> </p>
+        </div>
+    <% else%>
+        <div>
+            <p> <%= image_tag user.profile_picture, alt: "Profile Picture", class: "small-avatar"%></p>
+            <p> <%= user.email%></p>
+            <p> <%= button_to "Follow", follows_path, method: :post, params: {followed_id: user.id}%> </p>
+        </div>
+    <%end%>
+<%end%>

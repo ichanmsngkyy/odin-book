@@ -1,5 +1,7 @@
 <%= link_to "New Post", new_post_path %>
+<%= link_to "Home", posts_path%>
 <%= link_to "Profile", user_path(current_user) %>
+<%= link_to "Who to follow", users_path%>
 
 <% @posts.each do |post| %>
     <div>
@@ -10,7 +12,7 @@
 
         <% if post.user != current_user%>
             <% if existing_follow %>
-                <%= button_to "Unfollow", follow_path(existing_follow), method: :delete %>
+                <%= button_to "Following", follow_path(existing_follow), method: :delete %>
             <% else%>
                 <%= button_to "Follow", follows_path, method: :post, params: {followed_id: post.user.id} %>
             <%end %>
