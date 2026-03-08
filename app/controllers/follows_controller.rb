@@ -3,10 +3,15 @@ class FollowsController < ApplicationController
 
     def create
         @follow = current_user.active_follows.build(follow_params)
+        @follow.status = :accepted
         if @follow.save
-            redirect_back(fallback_location: root_path, notice: "Follow request sent.")
+            @user = User.find(@follow.followed_id)
+         respond_to do |format|
+             format.turbo_stream
+             format.html { redirect_back(fallback_location: root_path) }
+           end
         else
-           redirect_back(fallback_location: root_path, alert: "Unable to send follow request.")
+            redirect_back(fallback_location: root_path, alert: "Unable to follow this user.")
         end
     end
 
@@ -22,8 +27,13 @@ class FollowsController < ApplicationController
 
     def destroy
         if @follow.follower_id == current_user.id || @follow.followed_id == current_user.id
+            @user = User.find(@follow.followed_id)
             @follow.destroy
-            redirect_back(fallback_location: root_path, notice: "Unfollowed successfully.")
+            respond_to do |format|
+             format.turbo_stream
+             format.html { redirect_back(fallback_location:
+             root_path) }
+           end
         else
             redirect_back(fallback_location: root_path, alert: "You are not authorized to unfollow this user.")
         end
