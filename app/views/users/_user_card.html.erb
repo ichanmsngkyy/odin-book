@@ -1,12 +1,14 @@
-<%= turbo_frame_tag "user_#{user.id}" do %>
- <% existing_follow = current_user.active_follows.find_by(followed_id: user.id) %>
-    <div>
-        <p> <%= image_tag user.profile_picture, alt: "Profile Picture", class: "small-avatar"%></p>
-        <p> <%= user.email%></p>
-   <% if existing_follow %>   
-        <p> <%= button_to "Following", follow_path(existing_follow), method: :delete%> </p>
-    <% else %>
-        <p> <%= button_to "Follow", follows_path, method: :post, params: {followed_id: user.id}%> </p>
+<% existing_follow = current_user.active_follows.find_by(followed_id: user.id) %>
+<% if existing_follow.nil? ||  existing_follow.pending?%>
+    <%= turbo_frame_tag "user_#{user.id}" do %>
+        <div>
+            <p> <%= image_tag user.profile_picture, alt: "Profile Picture", class: "small-avatar"%></p>
+            <p> <%= user.email%></p>
+    <% if existing_follow %>   
+            <p> <%= button_to "Requested", follow_path(existing_follow), method: :delete%> </p>
+        <% else %>
+            <p> <%= button_to "Follow", follows_path, method: :post, params: {followed_id: user.id}%> </p>
+        <% end %>
+        </div>
     <% end %>
-    </div>
 <% end %>

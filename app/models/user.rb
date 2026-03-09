@@ -22,6 +22,9 @@ class User < ApplicationRecord
   # Comment model
   has_many :comments
 
+  # Callbacks
+  after_create :send_welcome_email
+
   require "digest"
 
   def self.from_omniauth(auth)
@@ -41,5 +44,9 @@ class User < ApplicationRecord
   def gravatar_url(size: 200)
       hash = Digest::MD5.hexdigest(email.downcase.strip)
       "https://www.gravatar.com/avatar/#{hash}?d=identicon&s=#{size}"
+  end
+
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver_later
   end
 end

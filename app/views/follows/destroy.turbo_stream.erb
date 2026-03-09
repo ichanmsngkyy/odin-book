@@ -1,3 +1,7 @@
-<%= turbo_stream.replace("user_#{@user.id}") do %>
-    <%= render "users/user_card", user: @user%>
-<% end %>
+<% if @user%>
+    <%= turbo_stream.replace("user_#{@user.id}") do %>
+        <%= render "users/user_card", user: @user%>
+    <% end %>
+<% else %>
+     <%= turbo_stream.remove("pending_follows#{@follow.id}") %>
+<%end%>

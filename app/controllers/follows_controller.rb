@@ -3,7 +3,6 @@ class FollowsController < ApplicationController
 
     def create
         @follow = current_user.active_follows.build(follow_params)
-        @follow.status = :accepted
         if @follow.save
             @user = User.find(@follow.followed_id)
          respond_to do |format|
@@ -17,8 +16,13 @@ class FollowsController < ApplicationController
 
     def update
         if @follow.followed_id == current_user.id
-            @follow.update(status: :accepted) # accepted
-            redirect_back(fallback_location: root_path, notice: "Follow request accepted.")
+            status = params[:status]
+            @follow.update(status: status)
+
+            respond_to do |format|
+              format.turbo_stream
+              format.html { redirect_back(fallback_location: root_path) }
+            end
         else
             redirect_back(fallback_location: root_path, alert: "You are not authorized to accept this follow request.")
         end
@@ -27,8 +31,12 @@ class FollowsController < ApplicationController
 
     def destroy
         if @follow.follower_id == current_user.id || @follow.followed_id == current_user.id
-            @user = User.find(@follow.followed_id)
+            if @follow.follower_id == current_user.id
+                @user = User.find(@follow.followed_id)
+            end
+
             @follow.destroy
+            
             respond_to do |format|
              format.turbo_stream
              format.html { redirect_back(fallback_location:

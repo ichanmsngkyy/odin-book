@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "pending_follows#{follow_request.id}" do %>
+    <div>
+        <p> <%= image_tag follow_request.follower.profile_picture, alt: "Profile Picture", class: "small-avatar"%></p>
+        <p> <%= follow_request.follower.email%></p>
+        <div>
+            <p> <%= button_to "Accept", follow_path(follow_request), method: :patch, params: {status: :accepted}%> </p>
+            <p> <%= button_to "Reject", follow_path(follow_request), method: :delete %> </p>
+        </div>
+    </div>
+<% end %>

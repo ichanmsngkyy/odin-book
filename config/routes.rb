@@ -16,7 +16,12 @@ Rails.application.routes.draw do
     root to: "posts#index"
   end
 
-  resources :users, only: [ :index, :show ]
+  resources :users, only: [ :index, :show ] do
+    collection do
+      get :follow_requests
+    end
+  end
+
   resources :follows, only: [ :create, :update, :destroy ]
   resources :posts, only: [ :index, :new, :create, :destroy ]
   resources :likes, only: [ :create, :destroy ]

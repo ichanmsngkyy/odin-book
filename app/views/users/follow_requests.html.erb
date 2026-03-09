@@ -4,6 +4,6 @@
 <%= link_to "Who to follow", users_path%>
 <%= link_to "Follow Requests", follow_requests_users_path%>
 
-<% @users.each do |user|%>
-       <%= render "user_card", user: user%>
-<%end%>
+<% @pending_follows.each do |pending|%>
+    <%= render "follow_request", follow_request: pending%>
+<% end %>
