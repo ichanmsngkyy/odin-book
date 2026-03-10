@@ -66,6 +66,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
+gem 'dotenv-rails', groups: [:development, :test]
+
 gem "devise", "~> 5.0"
 
 gem "omniauth-github", "~> 2.0"
