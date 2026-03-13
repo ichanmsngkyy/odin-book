@@ -36,7 +36,7 @@ class User < ApplicationRecord
   end
 
   def profile_picture(size: 200)
-    avatar_url.presence || gravatar_url
+    avatar_url.presence || gravatar_url(size: size)
   end
 
   private

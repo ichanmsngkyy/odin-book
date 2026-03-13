@@ -58,6 +58,7 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "letter_opener"
+  gem "guard"
 end
 
 group :test do
@@ -66,7 +67,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem 'dotenv-rails', groups: [:development, :test]
+
+gem "dotenv-rails", groups: [ :development, :test ]
 
 gem "devise", "~> 5.0"
 
@@ -75,3 +77,9 @@ gem "omniauth-github", "~> 2.0"
 gem "omniauth-rails_csrf_protection", "~> 2.0"
 
 gem "letter_opener_web", "~> 3.0", group: :development
+
+gem "rspec-rails", "~> 8.0", groups: [ :development, :test ]
+
+gem "shoulda-matchers", groups: [ :development, :test ]
+
+gem "guard-rspec", "~> 4.7", group: :development
