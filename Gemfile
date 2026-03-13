@@ -59,6 +59,7 @@ group :development do
   gem "web-console"
   gem "letter_opener"
   gem "guard"
+  gem "factory_bot_rails"
 end
 
 group :test do

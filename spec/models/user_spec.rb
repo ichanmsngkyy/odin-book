@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { User.new(email: "test@gmail.com", password: "password123") }
+  let(:user) { create(:user) }
   describe "associations" do
     it { should have_many(:posts) }
 
@@ -24,12 +24,12 @@ RSpec.describe User, type: :model do
     it { should validate_length_of(:password).is_at_least(6) }
 
     it "is invalid without an email" do
-      user = User.new(password: "password123")
+      user = build(:user, email: nil)
       expect(user).not_to be_valid
     end
 
     it "is invalid with a short password" do
-      user = User.new(email: "test@example.com", password: "123")
+      user = build(:user, password: "123")
       expect(user).not_to be_valid
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe User, type: :model do
         expect(user_arg.email).to eq("test1@gmail.com")
         double(deliver_later: true)
       end
-    User.create!(email: "test1@gmail.com", password: "password123")
+    create(:user, email: "test1@gmail.com", password: "password123")
     end
   end
 
@@ -64,13 +64,13 @@ RSpec.describe User, type: :model do
     end
 
     it "is expected to use gravatar if profile is nil " do
-    user.avatar_url = nil
+    user = build(:user, email: "test@gmail.com", avatar_url: nil)
     hash = Digest::MD5.hexdigest("test@gmail.com".downcase.strip)
     expect(user.profile_picture).to eq("https://www.gravatar.com/avatar/#{hash}?d=identicon&s=#{200}")
     end
 
     it "is expected to returns gravatar url with custom size" do
-      user.avatar_url = nil
+       user = build(:user, email: "test@gmail.com", avatar_url: nil)
       hash = Digest::MD5.hexdigest("test@gmail.com".downcase.strip)
       expect(user.profile_picture(size: 500)).to eq("https://www.gravatar.com/avatar/#{hash}?d=identicon&s=500")
     end
