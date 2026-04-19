@@ -1,0 +1,12 @@
+<aside class="right-sidebar">
+  <% return unless user_signed_in? %>
+
+  <h3>Who to follow</h3>
+
+  <% if controller_name == "users" && action_name == "index" %>
+    <p>Suggestions are shown in the main content on this page.</p>
+    <% return %>
+  <% end %>
+
+  <%= render "shared/suggestions_list" %>
+</aside>

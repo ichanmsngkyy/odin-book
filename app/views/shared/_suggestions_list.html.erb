@@ -1,0 +1,9 @@
+<% if @suggested_users.any? %>
+  <div class="suggestions-list">
+    <% @suggested_users.each do |user| %>
+      <%= render "users/user_card", user: user %>
+    <% end %>
+  </div>
+<% else %>
+  <p>No new suggestions right now.</p>
+<% end %>

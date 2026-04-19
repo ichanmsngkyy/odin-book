@@ -1,0 +1,89 @@
+<% display_post = post.original_post || post %>
+<% existing_like = display_post.likes.find_by(user: current_user) %>
+<% existing_retweet = current_user.posts.find_by(original_post: display_post) %>
+
+<article class="post-card">
+  <div class="post-avatar-wrap">
+    <%= image_tag display_post.user.profile_picture, alt: "Profile picture", class: "small-avatar" %>
+  </div>
+
+  <div class="post-body-wrap">
+    <% if post.retweet? %>
+      <p class="post-retweet-label">Retweeted by @<%= post.user.email.split("@").first %></p>
+    <% end %>
+
+    <div class="post-meta-row">
+      <span class="post-author"><%= display_post.user.email.split("@").first %></span>
+      <span class="post-handle">@<%= display_post.user.email.split("@").first %></span>
+      <span class="post-dot">.</span>
+      <span class="post-time"><%= time_ago_in_words(post.created_at) %> ago</span>
+
+      <% if post.user_id == current_user.id %>
+        <%= button_to "Delete", post_path(post), method: :delete, class: "post-delete-button" %>
+      <% end %>
+    </div>
+
+    <p class="post-text"><%= display_post.content %></p>
+    <% if display_post.photos.attached? %>
+      <% display_post.photos.each do |photo| %>
+        <%= image_tag photo, alt: "Photo", class: "post-photo" %>
+      <% end %>
+    <% end %>
+
+    <div class="post-actions-row">
+      <div class="post-action-group">
+        <details class="reply-panel">
+          <summary class="post-action-link">Reply</summary>
+          <div class="post-comment-box">
+            <%= form_with url: comments_path do |fc| %>
+              <% if @comment&.errors&.any? && @failed_comment_post_id == display_post.id %>
+                <div class="form-errors" role="alert">
+                  <% @comment.errors.full_messages.each do |message| %>
+                    <p><%= message %></p>
+                  <% end %>
+                </div>
+              <% end %>
+              <%= fc.text_area :content, placeholder: "Write a reply..." %>
+              <%= fc.file_field :photo, accept: "image/*" %>
+              <%= fc.hidden_field :post_id, value: display_post.id %>
+              <%= fc.submit "Comment" %>
+            <% end %>
+          </div>
+        </details>
+        <span class="post-action-count"><%= display_post.comments.count %></span>
+      </div>
+
+      <div class="post-action-group">
+        <%= button_to "↻", retweet_post_path(post), method: :post, class: "post-action-link post-action-retweet#{' retweeted' if existing_retweet}" %>
+        <span class="post-action-count"><%= display_post.retweets.count %></span>
+      </div>
+
+      <div class="post-action-group">
+        <% if existing_like %>
+          <%= button_to "♥", like_path(existing_like), method: :delete, class: "post-action-like liked", form_class: "post-inline-form" %>
+        <% else %>
+          <%= button_to "♡", likes_path, method: :post, params: { post_id: display_post.id }, class: "post-action-like", form_class: "post-inline-form" %>
+        <% end %>
+        <span class="post-action-count"><%= display_post.likes.count %></span>
+      </div>
+    </div>
+
+    <% if display_post.comments.any? %>
+      <div class="post-comments-list">
+        <% display_post.comments.each do |comment| %>
+          <div class="post-comment-item">
+            <p><strong><%= comment.user.email %></strong></p>
+            <p><%= comment.content %></p>
+            <% if comment.photo.attached? %>
+              <%= image_tag comment.photo, alt: "Comment photo", class: "comment-photo" %>
+            <% end %>
+            <p class="post-comment-time"><%= comment.created_at %></p>
+            <% if comment.user_id == current_user.id %>
+              <%= button_to "Delete", comment_path(comment), method: :delete, class: "post-comment-delete" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</article>

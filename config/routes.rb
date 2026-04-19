@@ -23,7 +23,11 @@ Rails.application.routes.draw do
   end
 
   resources :follows, only: [ :create, :update, :destroy ]
-  resources :posts, only: [ :index, :new, :create, :destroy ]
+  resources :posts, only: [ :index, :new, :create, :destroy ] do
+    member do
+      post :retweet
+    end
+  end
   resources :likes, only: [ :create, :destroy ]
   resources :comments, only: [ :create, :destroy ]
 

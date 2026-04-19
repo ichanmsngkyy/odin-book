@@ -1,0 +1,24 @@
+<div class="post-composer">
+  <%= form_with url: posts_path do |f| %>
+    <div class="composer-row">
+      <%= image_tag current_user.profile_picture(size: 48), alt: "Profile picture", class: "composer-avatar" %>
+      <div class="composer-body">
+        <% if @post&.errors&.any? %>
+          <div class="form-errors" role="alert">
+            <% @post.errors.full_messages.each do |message| %>
+              <p><%= message %></p>
+            <% end %>
+          </div>
+        <% end %>
+        <%= f.text_area :content, placeholder: "What's happening?" %>
+        <%= f.file_field :photos, multiple: true, accept:"image/*" %>
+        <div class="composer-actions">
+          <div class="composer-tools">
+            <button type="button" class="compose-tool-button compose-image-button">Image</button>
+          </div>
+          <%= f.submit "Post", class: "compose-submit" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

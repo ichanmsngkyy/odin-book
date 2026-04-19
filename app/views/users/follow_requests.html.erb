@@ -1,9 +1,9 @@
-<%= link_to "New Post", new_post_path %>
-<%= link_to "Home", posts_path%>
-<%= link_to "Profile", user_path(current_user) %>
-<%= link_to "Who to follow", users_path%>
-<%= link_to "Follow Requests", follow_requests_users_path%>
+<h2>Follow Requests</h2>
 
-<% @pending_follows.each do |pending|%>
-    <%= render "follow_request", follow_request: pending%>
+<% if @pending_follows.any? %>
+    <% @pending_follows.each do |pending| %>
+        <%= render "follow_request", follow_request: pending %>
+    <% end %>
+<% else %>
+    <p>No pending follow requests.</p>
 <% end %>

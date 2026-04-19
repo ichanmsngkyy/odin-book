@@ -1,0 +1,41 @@
+.left-nav{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+
+}
+
+.left-nav a,
+.left-nav a:visited{
+    display: block;
+    padding: 20px;
+    color: #E1E8ED;
+    text-decoration: none;
+}
+
+.left-nav a:hover,
+.left-nav a:active{
+    color: #1DA1F2;
+    text-decoration: none;
+}
+
+.left-nav .button_to {
+    margin: 0;
+}
+
+.left-nav .button_to button {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    border: 0;
+    background: transparent;
+    color: #E1E8ED;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+}
+
+.left-nav .button_to button:hover,
+.left-nav .button_to button:active {
+    color: #1DA1F2;
+}

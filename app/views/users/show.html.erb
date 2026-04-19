@@ -1,54 +1,16 @@
-<%= link_to "New Post", new_post_path %>
-<%= link_to "Home", posts_path%>
-<%= link_to "Profile", user_path(current_user) %>
-<%= link_to "Who to follow", users_path%>
-<%= link_to "Follow Requests", follow_requests_users_path%>
 
-<div>
-    <p> <%= image_tag @user.profile_picture, alt: "Profile Picture", class: "small-avatar"%></p>
-    <p> <%= @user.email%></p>
+<div class="profile-header">
+  <p><%= image_tag @user.profile_picture, alt: "Profile Picture", class: "small-avatar" %></p>
+  <p><%= @user.email %></p>
 
-    <div>
-        <p><% @user.followers.count%></p>
-        <p><% @user.following.count%></p>
-    </div>
+  <div class="profile-follow-stats">
+    <p><%= @user.followers.count %> followers</p>
+    <p><%= @user.following.count %> following</p>
+  </div>
+</div>
 
-    <div>
-        <% @posts.each do |post|%>
-        <p> <%= post.content %> </p>
-        <p> <%= post.created_at %> </p>
-
-        <%=link_to "Reply", "#" %>
-
-        <% existing_like = post.likes.find_by(user: current_user) %>
-        <% if existing_like %>
-            <%= button_to "❤️", like_path(existing_like), method: :delete %>
-        <% else%>
-            <%= button_to "🤍", likes_path, method: :post, params: {post_id: post.id} %>
-        <% end %>
-
-        <%= post.likes.count %>
-
-        <%=link_to "Retweet", "#" %>
-
-        <% if post.user_id == current_user.id %>
-            <%= button_to "Delete", post_path(post), method: :delete %>
-        <%end%>
-
-        <%= form_with url: comments_path do |fc|%>
-            <%= fc.text_area :content%>
-            <%= fc.hidden_field :post_id, value: post.id%>
-            <%= fc.submit "Comment"%>
-        <%end%>
-
-        <% post.comments.each do |comment|%>
-            <p> <%= comment.user.email%> </p>
-            <p> <%= comment.content%> </p>
-            <p> <%= comment.created_at %> </p>
-            <% if comment.user_id == current_user.id %>
-                <%= button_to "Delete", comment_path(comment), method: :delete%>
-            <% end %>
-        <% end %>
-    </div>
-    <%end%>
+<div class="profile-posts-list">
+  <% @posts.each do |post| %>
+    <%= render "posts/post", post: post %>
+  <% end %>
 </div>

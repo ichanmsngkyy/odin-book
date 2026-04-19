@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Odin Book" %></title>
+    <title><%= content_for(:title) || "Z" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Odin Book">
+    <meta name="application-name" content="Z">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -24,9 +24,24 @@
   </head>
 
   <body>
-    <% flash.each do |key, value| %>
-      <div class="flash <%= key %>"><%= value %></div>
+    <% if user_signed_in? %>
+      <div class="app-container">
+        <%= render "shared/left_nav" %>
+        <div class="main-content">
+          <% flash.each do |key, value| %>
+            <div class="flash <%= key %>"><%= value %></div>
+          <% end %>
+          <%= yield %>
+        </div>
+        <%= render "shared/right_sidebar" %>
+      </div>
+    <% else %>
+      <main class="auth-layout">
+        <% flash.each do |key, value| %>
+          <div class="flash <%= key %>"><%= value %></div>
+        <% end %>
+        <%= yield %>
+      </main>
     <% end %>
-    <%= yield %>
   </body>
 </html>

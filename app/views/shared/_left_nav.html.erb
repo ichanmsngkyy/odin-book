@@ -1,0 +1,10 @@
+<% if user_signed_in? %>
+  <div class="left-nav">
+    <%= link_to "New Post", new_post_path %>
+    <%= link_to "Home", posts_path %>
+    <%= link_to "Profile", user_path(current_user) %>
+    <%= link_to "Who to follow", users_path %>
+    <%= link_to "Follow Requests", follow_requests_users_path %>
+    <%= button_to "Logout", destroy_user_session_path, method: :delete %>
+  </div>
+<% end %>
