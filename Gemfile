@@ -71,7 +71,7 @@ end
 
 gem "dotenv-rails", groups: [ :development, :test ]
 
-gem "devise", "~> 5.0"
+gem "devise", "~> 5.0.3"
 
 gem "omniauth-github", "~> 2.0"
 
