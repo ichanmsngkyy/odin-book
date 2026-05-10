@@ -1,7 +1,7 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  fixtures :none  # Don't load any fixtures for this test
+  include Devise::Test::IntegrationHelpers
 
   setup do
     @user = User.create!(
@@ -9,6 +9,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       password: "password123",
       password_confirmation: "password123"
     )
+    sign_in @user
   end
 
   test "should get show" do
